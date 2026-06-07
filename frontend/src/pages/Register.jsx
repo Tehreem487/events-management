@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -9,33 +8,22 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const submitHandler = async (e) => {
+  const submitHandler = (e) => {
     e.preventDefault();
 
     if (!name || !email || !password) {
       alert("Please fill all fields");
       return;
     }
+    localStorage.setItem("userName", name);
+localStorage.setItem("userEmail", email);
 
-    try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/auth/register`,
-        {
-          name,
-          email,
-          password,
-        }
-      );
+    localStorage.setItem("userName", name);
+    localStorage.setItem("userEmail", email);
 
-      alert(res.data.message);
+    alert("User Signup Successful");
 
-      navigate("/login");
-    } catch (error) {
-      alert(
-        error.response?.data?.message ||
-          "Registration Failed"
-      );
-    }
+    navigate("/login");
   };
 
   return (
