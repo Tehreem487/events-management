@@ -9,17 +9,48 @@ import authRoutes from "./routes/authRoutes.js";
 import eventRoutes from "./routes/eventRoutes.js";
 import bookingRoutes from "./routes/bookingRoutes.js";
 
-connectDB();
-
 const app = express();
 
-app.use(cors());
+/* =======================
+   CORS CONFIG (IMPORTANT)
+======================= */
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://your-frontend.vercel.app" // 👈 CHANGE THIS
+    ],
+    credentials: true,
+  })
+);
+
+/* =======================
+   MIDDLEWARE
+======================= */
 app.use(express.json());
 
+/* =======================
+   DATABASE CONNECTION
+======================= */
+connectDB();
+
+/* =======================
+   ROUTES
+======================= */
 app.use("/api/auth", authRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/bookings", bookingRoutes);
 
+/* =======================
+   TEST ROUTE
+======================= */
+app.get("/", (req, res) => {
+  res.send("API is running...");
+});
+
+/* =======================
+   START SERVER
+======================= */
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
