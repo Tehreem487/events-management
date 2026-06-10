@@ -4,19 +4,16 @@ import axios from "axios";
 
 const Register = () => {
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] =
-    useState("");
-
+  const [password, setPassword] = useState(""); // setPassword add kar diya
   const [error, setError] = useState("");
-  const [success, setSuccess] =
-    useState("");
+  const [success, setSuccess] = useState("");
 
   const handleRegister = async (e) => {
     e.preventDefault();
-
     setError("");
     setSuccess("");
 
@@ -26,18 +23,12 @@ const Register = () => {
     }
 
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/auth/register",
-        {
-          name,
-          email,
-          password,
-        }
+      await axios.post(
+        `${API_URL}/api/auth/register`,
+        { name, email, password }
       );
 
-      setSuccess(
-        "✅ Account Created Successfully"
-      );
+      setSuccess("✅ Account Created Successfully");
 
       setTimeout(() => {
         navigate("/login");
@@ -45,8 +36,7 @@ const Register = () => {
 
     } catch (err) {
       setError(
-        err.response?.data?.message ||
-          "❌ Registration Failed"
+        err.response?.data?.message || "❌ Registration Failed"
       );
     }
   };
@@ -58,37 +48,27 @@ const Register = () => {
         <p>Join EventHub Today</p>
 
         {error && <div className="error-msg">{error}</div>}
-        {success && (
-          <div className="success-msg">
-            {success}
-          </div>
-        )}
+        {success && <div className="success-msg">{success}</div>}
 
         <input
           type="text"
           placeholder="Enter Name"
           value={name}
-          onChange={(e) =>
-            setName(e.target.value)
-          }
+          onChange={(e) => setName(e.target.value)}
         />
 
         <input
           type="email"
           placeholder="Enter Email"
           value={email}
-          onChange={(e) =>
-            setEmail(e.target.value)
-          }
+          onChange={(e) => setEmail(e.target.value)}
         />
 
         <input
           type="password"
           placeholder="Enter Password"
           value={password}
-          onChange={(e) =>
-            setPassword(e.target.value)
-          }
+          onChange={(e) => setPassword(e.target.value)}
         />
 
         <button onClick={handleRegister}>
@@ -99,9 +79,7 @@ const Register = () => {
           Already have an account?{" "}
           <b
             style={{ cursor: "pointer" }}
-            onClick={() =>
-              navigate("/login")
-            }
+            onClick={() => navigate("/login")}
           >
             Login
           </b>
