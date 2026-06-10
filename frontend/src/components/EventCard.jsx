@@ -4,11 +4,11 @@ const EventCard = ({ event }) => {
   const navigate = useNavigate();
 
   const bookEvent = () => {
-    const isLoggedIn = localStorage.getItem("loggedIn");
+    const loggedIn = localStorage.getItem("loggedIn");
 
-    if (!isLoggedIn) {
-      alert("Please login first");
-      navigate("/login");
+    if (!loggedIn) {
+      alert("Please Register First");
+      navigate("/register");
       return;
     }
 
@@ -22,7 +22,7 @@ const EventCard = ({ event }) => {
       JSON.stringify(bookings)
     );
 
-    alert("Booking Successful");
+    alert("Event Booked Successfully");
   };
 
   return (
@@ -31,8 +31,24 @@ const EventCard = ({ event }) => {
 
       <div className="card-content">
         <h3>{event.title}</h3>
-        <p>{event.location}</p>
-        <p>{event.date}</p>
+
+        <p><strong>📍 Location:</strong> {event.location}</p>
+
+        <p><strong>🏢 Venue:</strong> {event.venue}</p>
+
+        <p><strong>📅 Date:</strong> {event.date}</p>
+
+        <p><strong>⏰ Time:</strong> {event.time}</p>
+
+        <p><strong>🎫 Price:</strong> {event.price}</p>
+
+        <p><strong>📂 Category:</strong> {event.category}</p>
+
+        <p><strong>👤 Organizer:</strong> {event.organizer}</p>
+
+        <p className="description">
+          {event.description}
+        </p>
 
         <button onClick={bookEvent}>
           Book Now

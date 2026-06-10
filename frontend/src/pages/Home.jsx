@@ -5,13 +5,29 @@ const Home = () => {
 
   return (
     <div className="hero">
-      <h1>Welcome To EventHub</h1>
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="hero-video"
+      >
+        <source
+          src="https://www.w3schools.com/howto/rain.mp4"
+          type="video/mp4"
+        />
+      </video>
 
-      <p>Manage and Book Events Easily</p>
+      <div className="hero-overlay"></div>
 
-      <button onClick={() => navigate("/events")}>
-        Explore Events
-      </button>
+      <div className="hero-content">
+        <h1>Welcome To EventHub</h1>
+        <p>Manage and Book Events Easily</p>
+
+        <button onClick={() => navigate("/events")}>
+          Explore Events
+        </button>
+      </div>
     </div>
   );
 };

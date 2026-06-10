@@ -1,61 +1,50 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import User from "../models/User.js";
+import bcrypt from "bcryptjs";
 
-const Register = () => {
-  const navigate = useNavigate();
+// REGISTER
+export const registerUser = async (req, res) => {
+  try {
+    console.log("🔥 REGISTER HIT");
+    console.log("BODY:", req.body);
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+    const { name, email, password } = req.body;
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-
+    // check empty fields
     if (!name || !email || !password) {
-      alert("Please fill all fields");
-      return;
+      return res.status(400).json({ message: "All fields required" });
     }
-    localStorage.setItem("userName", name);
-localStorage.setItem("userEmail", email);
 
-    localStorage.setItem("userName", name);
-    localStorage.setItem("userEmail", email);
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
+    }
 
-    alert("User Signup Successful");
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    navigate("/login");
-  };
+    const user = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+    });
 
-  return (
-    <form className="form" onSubmit={submitHandler}>
-      <h2>Register</h2>
+    console.log("✅ USER SAVED:", user);
 
-      <input
-        type="text"
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
+    return res.status(201).json({
+      message: "User registered successfully",
+      user,
+    });
 
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
+  } catch (err) {
+    console.log("❌ REGISTER ERROR:", err);
+    return res.status(500).json({ message: err.message });
+  }
+};console.log("🔥 REGISTER HIT");
+console.log("BODY:", req.body);
 
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
+const user = await User.create({
+  name,
+  email,
+  password: hashedPassword,
+});
 
-      <button type="submit">
-        Create Account
-      </button>
-    </form>
-  );
-};
-
-export default Register;
+console.log("✅ SAVED USER:", user);

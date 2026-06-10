@@ -1,55 +1,34 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import User from "../models/User.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
-const Login = () => {
-  const navigate = useNavigate();
+export const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const submitHandler = (e) => {
-    e.preventDefault();
-
-    // Validation
     if (!email || !password) {
-      alert("Please fill all fields");
-      return;
+      return res.status(400).json({ message: "All fields required" });
     }
 
-    // Save login status
-    localStorage.setItem("loggedIn", "true");
-    localStorage.setItem("userEmail", email);
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
-    // Success message
-    alert("Login Successful");
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
 
-    // Navigate to Events page
-    navigate("/events");
-  };
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
 
-  return (
-    <form className="form" onSubmit={submitHandler}>
-      <h2>Login</h2>
+    return res.json({ token, user });
 
-      <input
-        type="email"
-        placeholder="Enter Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-
-      <input
-        type="password"
-        placeholder="Enter Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-
-      <button type="submit">
-        Login
-      </button>
-    </form>
-  );
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
 };
-
-export default Login;
