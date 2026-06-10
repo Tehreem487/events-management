@@ -1,50 +1,114 @@
-import User from "../models/User.js";
-import bcrypt from "bcryptjs";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-// REGISTER
-export const registerUser = async (req, res) => {
-  try {
-    console.log("🔥 REGISTER HIT");
-    console.log("BODY:", req.body);
+const Register = () => {
+  const navigate = useNavigate();
 
-    const { name, email, password } = req.body;
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] =
+    useState("");
 
-    // check empty fields
+  const [error, setError] = useState("");
+  const [success, setSuccess] =
+    useState("");
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+
+    setError("");
+    setSuccess("");
+
     if (!name || !email || !password) {
-      return res.status(400).json({ message: "All fields required" });
+      setError("⚠ Please fill all fields");
+      return;
     }
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: "User already exists" });
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/auth/register",
+        {
+          name,
+          email,
+          password,
+        }
+      );
+
+      setSuccess(
+        "✅ Account Created Successfully"
+      );
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 1200);
+
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+          "❌ Registration Failed"
+      );
     }
+  };
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+  return (
+    <div className="auth-wrapper">
+      <div className="auth-card">
+        <h2>Create Account 🎉</h2>
+        <p>Join EventHub Today</p>
 
-    const user = await User.create({
-      name,
-      email,
-      password: hashedPassword,
-    });
+        {error && <div className="error-msg">{error}</div>}
+        {success && (
+          <div className="success-msg">
+            {success}
+          </div>
+        )}
 
-    console.log("✅ USER SAVED:", user);
+        <input
+          type="text"
+          placeholder="Enter Name"
+          value={name}
+          onChange={(e) =>
+            setName(e.target.value)
+          }
+        />
 
-    return res.status(201).json({
-      message: "User registered successfully",
-      user,
-    });
+        <input
+          type="email"
+          placeholder="Enter Email"
+          value={email}
+          onChange={(e) =>
+            setEmail(e.target.value)
+          }
+        />
 
-  } catch (err) {
-    console.log("❌ REGISTER ERROR:", err);
-    return res.status(500).json({ message: err.message });
-  }
-};console.log("🔥 REGISTER HIT");
-console.log("BODY:", req.body);
+        <input
+          type="password"
+          placeholder="Enter Password"
+          value={password}
+          onChange={(e) =>
+            setPassword(e.target.value)
+          }
+        />
 
-const user = await User.create({
-  name,
-  email,
-  password: hashedPassword,
-});
+        <button onClick={handleRegister}>
+          Register
+        </button>
 
-console.log("✅ SAVED USER:", user);
+        <span>
+          Already have an account?{" "}
+          <b
+            style={{ cursor: "pointer" }}
+            onClick={() =>
+              navigate("/login")
+            }
+          >
+            Login
+          </b>
+        </span>
+      </div>
+    </div>
+  );
+};
+
+export default Register;

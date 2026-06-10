@@ -1,45 +1,51 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Segoe UI", sans-serif;
-}
 
 html,
 body,
 #root {
-  min-height: 100vh;
-  background: #0b1220;
-  color: #e5e7eb;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
-/* ROOT */
+body {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: white;
+}
+
 #root {
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
+}
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
-/* =========================
-   NAVBAR (GLASS MODERN)
-========================= */
+body {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: white;
+}
+
+/* ================= NAVBAR ================= */
 .navbar {
-  background: rgba(15, 23, 42, 0.75);
+  background: rgba(15, 23, 42, 0.85);
   backdrop-filter: blur(12px);
-  color: #fff;
-  padding: 16px 50px;
+  padding: 18px 50px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: sticky;
   top: 0;
   z-index: 100;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
 .navbar h2 {
-  font-size: 26px;
-  font-weight: 700;
   color: #facc15;
+  font-size: 26px;
 }
 
 .links {
@@ -48,8 +54,8 @@ body,
 }
 
 .links a {
-  text-decoration: none;
   color: #cbd5e1;
+  text-decoration: none;
   transition: 0.3s;
 }
 
@@ -57,126 +63,147 @@ body,
   color: #facc15;
 }
 
-/* =========================
-   HERO (VIDEO BACKGROUND)
-========================= */
-.hero {
-  position: relative;
-  height: 90vh;
-  overflow: hidden;
+/* ================= AUTH (LOGIN / REGISTER) ================= */
+.auth-wrapper {
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  background: radial-gradient(circle at top, #111827, #020617);
 }
 
-/* VIDEO */
-.hero-video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.auth-card {
+  width: 380px;
+  padding: 35px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(15px);
+
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.1);
+
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
 }
 
-/* DARK OVERLAY */
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.55);
-}
-
-/* CONTENT */
-.hero-content {
-  position: relative;
-  z-index: 2;
+.auth-card h2 {
   text-align: center;
+  color: #facc15;
+}
+
+.auth-card p {
+  text-align: center;
+  color: #cbd5e1;
+  margin-bottom: 10px;
+}
+
+.auth-card input {
+  width: 100%;
+  padding: 12px;
+
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.1);
+
+  background: rgba(0,0,0,0.4);
   color: white;
-  padding: 20px;
+
+  outline: none;
 }
 
-.hero-content h1 {
-  font-size: 64px;
-  margin-bottom: 15px;
+.auth-card input:focus {
+  border-color: #facc15;
+  box-shadow: 0 0 10px rgba(250,204,21,0.3);
 }
 
-.hero-content p {
-  font-size: 20px;
-  max-width: 650px;
-  margin: auto;
-  margin-bottom: 25px;
-  color: #e2e8f0;
-}
-
-.hero-content button {
-  padding: 14px 35px;
+.auth-card button {
+  padding: 12px;
   border: none;
-  border-radius: 30px;
+  border-radius: 10px;
+
   background: linear-gradient(135deg, #facc15, #f59e0b);
-  font-size: 16px;
   font-weight: bold;
   cursor: pointer;
   transition: 0.3s;
 }
 
-.hero-content button:hover {
+.auth-card button:hover {
   transform: translateY(-3px);
 }
 
-/* =========================
-   FORM (GLASS CARD)
-========================= */
-.form {
-  width: 420px;
-  margin: 60px auto;
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
-  padding: 30px;
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,0.1);
-}
-
-.form h2 {
+.auth-card span {
   text-align: center;
-  margin-bottom: 20px;
+  font-size: 13px;
+  color: #cbd5e1;
 }
 
-.form input {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 15px;
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.1);
-  background: rgba(0,0,0,0.3);
-  color: white;
-}
-
-.form button {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 10px;
-  background: #1e3a8a;
-  color: white;
+.auth-card span b {
+  color: #facc15;
   cursor: pointer;
 }
 
-/* =========================
-   EVENT GRID
-========================= */
+/* ================= HERO ================= */
+.hero {
+  position: relative;
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.hero-video {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+}
+
+.hero-content {
+  position: relative;
+  text-align: center;
+}
+
+.hero-content h1 {
+  font-size: 60px;
+}
+
+.hero-content p {
+  margin: 15px 0;
+  color: #cbd5e1;
+}
+
+.hero-content button {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 30px;
+
+  background: #facc15;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* ================= EVENT CARDS ================= */
 .event-grid {
   padding: 40px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 25px;
 }
 
-/* CARD */
 .card {
-  background: rgba(255,255,255,0.06);
-  border-radius: 16px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 15px;
   overflow: hidden;
   transition: 0.3s;
-  border: 1px solid rgba(255,255,255,0.08);
 }
 
 .card:hover {
@@ -190,94 +217,14 @@ body,
 }
 
 .card-content {
-  padding: 18px;
-}
-
-.card-content h3 {
-  color: #fff;
-}
-
-.card-content p {
-  color: #94a3b8;
-}
-
-.card button {
-  width: 100%;
-  margin-top: 10px;
-  padding: 12px;
-  border: none;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #1e3a8a, #3b82f6);
-  color: white;
-}
-
-/* =========================
-   BOOKINGS
-========================= */
-.booking-card {
-  display: flex;
-  gap: 15px;
-  align-items: center;
-  background: rgba(255,255,255,0.06);
   padding: 15px;
-  margin: 15px auto;
-  max-width: 700px;
-  border-radius: 14px;
-  border-left: 4px solid #facc15;
 }
 
-.booking-card img {
-  width: 90px;
-  height: 90px;
-  object-fit: cover;
-  border-radius: 10px;
-}
-
-/* FOOTER */
+/* ================= FOOTER ================= */
 .footer {
   margin-top: auto;
   background: #020617;
   color: #94a3b8;
   text-align: center;
   padding: 20px;
-}
-
-/* ALERTS */
-.success-msg {
-  background: #16a34a;
-  color: white;
-  padding: 10px;
-  border-radius: 8px;
-}
-
-.error-msg {
-  background: #dc2626;
-  color: white;
-  padding: 10px;
-  border-radius: 8px;
-}
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  .hero-content h1 {
-    font-size: 36px;
-  }
-
-  .hero-content p {
-    font-size: 16px;
-  }
-
-  .form {
-    width: 90%;
-  }
-
-  .navbar {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .booking-card {
-    flex-direction: column;
-    text-align: center;
-  }
 }

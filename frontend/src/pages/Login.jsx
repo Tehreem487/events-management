@@ -1,34 +1,100 @@
-import User from "../models/User.js";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-export const loginUser = async (req, res) => {
-  try {
-    const { email, password } = req.body;
+const Login = () => {
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    setError("");
+    setSuccess("");
 
     if (!email || !password) {
-      return res.status(400).json({ message: "All fields required" });
+      setError("⚠ Please fill all fields");
+      return;
     }
 
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        {
+          email,
+          password,
+        }
+      );
+
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("loggedIn", "true");
+      localStorage.setItem("userName", res.data.user.name);
+      localStorage.setItem("userEmail", res.data.user.email);
+
+      setSuccess("✅ Login Successful");
+
+      setTimeout(() => {
+        navigate("/events");
+      }, 1000);
+
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+          "❌ Invalid Credentials"
+      );
     }
+  };
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ message: "Invalid credentials" });
-    }
+  return (
+    <div className="auth-wrapper">
+      <div className="auth-card">
+        <h2>Welcome Back 👋</h2>
+        <p>Login to EventHub</p>
 
-    const token = jwt.sign(
-      { id: user._id, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
+        {error && <div className="error-msg">{error}</div>}
+        {success && <div className="success-msg">{success}</div>}
 
-    return res.json({ token, user });
+        <input
+          type="email"
+          placeholder="Enter Email"
+          value={email}
+          onChange={(e) =>
+            setEmail(e.target.value)
+          }
+        />
 
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
-  }
+        <input
+          type="password"
+          placeholder="Enter Password"
+          value={password}
+          onChange={(e) =>
+            setPassword(e.target.value)
+          }
+        />
+
+        <button onClick={handleLogin}>
+          Login
+        </button>
+
+        <span>
+          Don't have an account?{" "}
+          <b
+            style={{ cursor: "pointer" }}
+            onClick={() =>
+              navigate("/register")
+            }
+          >
+            Register
+          </b>
+        </span>
+      </div>
+    </div>
+  );
 };
+
+export default Login;
