@@ -8,7 +8,7 @@ const Register = () => {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState(""); // setPassword add kar diya
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -23,6 +23,7 @@ const Register = () => {
     }
 
     try {
+      console.log("Hitting API:", API_URL); // Debug ke liye
       await axios.post(
         `${API_URL}/api/auth/register`,
         { name, email, password }
@@ -35,6 +36,7 @@ const Register = () => {
       }, 1200);
 
     } catch (err) {
+      console.error(err);
       setError(
         err.response?.data?.message || "❌ Registration Failed"
       );
