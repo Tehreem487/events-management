@@ -24,7 +24,7 @@ const Login = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        "https://events-management-production.up.railway.app/api/auth/login",
         {
           email,
           password,
@@ -41,11 +41,9 @@ const Login = () => {
       setTimeout(() => {
         navigate("/events");
       }, 1000);
-
     } catch (err) {
       setError(
-        err.response?.data?.message ||
-          "❌ Invalid Credentials"
+        err.response?.data?.message || "❌ Invalid Credentials"
       );
     }
   };
@@ -63,18 +61,14 @@ const Login = () => {
           type="email"
           placeholder="Enter Email"
           value={email}
-          onChange={(e) =>
-            setEmail(e.target.value)
-          }
+          onChange={(e) => setEmail(e.target.value)}
         />
 
         <input
           type="password"
           placeholder="Enter Password"
           value={password}
-          onChange={(e) =>
-            setPassword(e.target.value)
-          }
+          onChange={(e) => setPassword(e.target.value)}
         />
 
         <button onClick={handleLogin}>
@@ -85,9 +79,7 @@ const Login = () => {
           Don't have an account?{" "}
           <b
             style={{ cursor: "pointer" }}
-            onClick={() =>
-              navigate("/register")
-            }
+            onClick={() => navigate("/register")}
           >
             Register
           </b>
