@@ -22,7 +22,22 @@ body {
   top: 0;
   z-index: 100;
 }
-
+/* Mobile ke liye - 768px se choti screen */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 12px 15px;
+    flex-wrap: wrap;
+  }
+  
+  .navbar h2 {
+    font-size: 20px;
+  }
+  
+  .links {
+    gap: 8px;
+    font-size: 13px;
+  }
+}
 .navbar h2 {
   color: #facc15;
   font-size: 26px;
