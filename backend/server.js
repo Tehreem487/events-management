@@ -12,17 +12,9 @@ import bookingRoutes from "./routes/bookingRoutes.js";
 const app = express();
 
 /* =======================
-   CORS CONFIG (IMPORTANT)
+   DATABASE CONNECTION
 ======================= */
-app.use(
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "https://your-frontend.vercel.app" // 👈 CHANGE THIS
-    ],
-    credentials: true,
-  })
-);
+connectDB();
 
 /* =======================
    MIDDLEWARE
@@ -30,9 +22,19 @@ app.use(
 app.use(express.json());
 
 /* =======================
-   DATABASE CONNECTION
+   CORS CONFIG
 ======================= */
-connectDB();
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://events-management-nu.vercel.app",
+    ],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 /* =======================
    ROUTES
